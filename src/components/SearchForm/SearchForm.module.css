@@ -1,0 +1,113 @@
+/* FlyOn — SearchForm Styles v1.3.0 | 2026-02-06 */
+
+.form {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  background: var(--color-surface);
+  padding: var(--space-xl);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.compact {
+  max-width: 100%;
+  padding: var(--space-md);
+  gap: var(--space-md);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.row {
+  display: flex;
+  gap: var(--space-md);
+  align-items: flex-end;
+}
+
+.airportGroup {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: flex-end;
+  flex: 1;
+}
+
+.swapBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  color: var(--color-primary);
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+  margin-bottom: 2px;
+}
+
+.swapBtn:hover {
+  background: var(--color-primary-light);
+}
+
+.searchBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  width: 100%;
+  padding: 14px 24px;
+  background: var(--color-primary);
+  color: white;
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast);
+}
+
+.searchBtn:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+.searchBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Compact variant adjustments */
+.compact .row {
+  flex-wrap: wrap;
+}
+
+.compact .searchBtn {
+  padding: 10px 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .form {
+    padding: var(--space-lg);
+    gap: var(--space-md);
+  }
+
+  .row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .airportGroup {
+    flex-direction: column;
+  }
+
+  .swapBtn {
+    align-self: center;
+    transform: rotate(90deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .form {
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+  }
+}
