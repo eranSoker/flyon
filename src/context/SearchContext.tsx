@@ -1,4 +1,4 @@
-// FlyOn — SearchContext v1.3.1 | 2026-02-06
+// FlyOn — SearchContext v1.9.0 | 2026-02-06
 
 'use client';
 
@@ -73,7 +73,7 @@ function applyFilters(flights: Flight[], filters: FilterState): Flight[] {
       return false;
     }
 
-    if (filters.airlines.length > 0 && !filters.airlines.includes(flight.airline)) {
+    if (filters.airlines.length > 0 && !filters.airlines.includes(flight.airlineCode)) {
       return false;
     }
 

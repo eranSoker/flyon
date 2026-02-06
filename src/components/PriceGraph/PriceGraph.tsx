@@ -1,4 +1,4 @@
-// FlyOn — PriceGraph Component v1.5.0 | 2026-02-06
+// FlyOn — PriceGraph Component v1.9.0 | 2026-02-06
 
 'use client';
 
@@ -46,7 +46,7 @@ export default function PriceGraph({ flights, carriers, onBarClick, activeFilter
       let key: string;
       switch (viewMode) {
         case 'airline':
-          key = carriers[flight.airline] || AIRLINE_NAMES[flight.airline] || flight.airline;
+          key = carriers[flight.airlineCode] || AIRLINE_NAMES[flight.airlineCode] || flight.airlineCode;
           break;
         case 'timeOfDay':
           key = getTimeOfDay(new Date(flight.departureTime).getHours());
@@ -75,7 +75,7 @@ export default function PriceGraph({ flights, carriers, onBarClick, activeFilter
       .sort((a, b) => a.minPrice - b.minPrice);
   }, [flights, carriers, viewMode]);
 
-  const currency = flights[0]?.currency || 'USD';
+  const currency = flights[0]?.currency || 'EUR';
 
   const handleBarClick = useCallback(
     (data: PriceDataPoint) => {

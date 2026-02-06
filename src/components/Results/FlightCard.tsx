@@ -1,4 +1,4 @@
-// FlyOn — FlightCard Component v1.3.1 | 2026-02-06
+// FlyOn — FlightCard Component v1.9.0 | 2026-02-06
 
 'use client';
 
@@ -78,12 +78,16 @@ export default function FlightCard({ flight, carriers, isCheapest = false }: Fli
 
         <div className={styles.airlineSection}>
           <span className={styles.airlineName}>{flight.airlineName}</span>
+          <span className={styles.cabinInfo}>
+            {flight.cabin.charAt(0) + flight.cabin.slice(1).toLowerCase().replace('_', ' ')}
+            {flight.brandedFare ? ` · ${flight.brandedFare}` : ''}
+          </span>
           <span className={styles.expandIcon}>{expanded ? '▲' : '▼'}</span>
         </div>
       </div>
 
       {expanded && (
-        <FlightDetails itineraries={flight.itineraries} carriers={carriers} />
+        <FlightDetails flight={flight} carriers={carriers} />
       )}
     </article>
   );

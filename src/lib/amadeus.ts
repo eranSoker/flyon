@@ -1,4 +1,4 @@
-// FlyOn — Amadeus API Client v1.1.0 | 2026-02-06
+// FlyOn — Amadeus API Client v1.9.0 | 2026-02-06
 
 const AMADEUS_BASE_URL = process.env.AMADEUS_BASE_URL || 'https://test.api.amadeus.com';
 const AMADEUS_API_KEY = process.env.AMADEUS_API_KEY;
@@ -41,8 +41,7 @@ class AmadeusClient {
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Amadeus auth failed (${response.status}): ${errorText}`);
+      throw new Error(`Amadeus auth failed: ${response.status}`);
     }
 
     const data: TokenResponse = await response.json();
@@ -53,7 +52,7 @@ class AmadeusClient {
     return this.token;
   }
 
-  async get(endpoint: string, params: Record<string, string> = {}): Promise<unknown> {
+  async get<T = unknown>(endpoint: string, params: Record<string, string> = {}): Promise<T> {
     let lastError: Error | null = null;
 
     for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
@@ -87,8 +86,12 @@ class AmadeusClient {
         }
 
         if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(`Amadeus API error (${response.status}): ${errorText}`);
+          const body = await response.json().catch(() => ({}));
+          const detail =
+            body.errors?.[0]?.detail ||
+            body.errors?.[0]?.title ||
+            `HTTP ${response.status}`;
+          throw new Error(`Amadeus error: ${detail}`);
         }
 
         return await response.json();

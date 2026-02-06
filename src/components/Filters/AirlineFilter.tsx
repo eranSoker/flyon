@@ -1,4 +1,4 @@
-// FlyOn — AirlineFilter Component v1.4.1 | 2026-02-06
+// FlyOn — AirlineFilter Component v1.9.0 | 2026-02-06
 
 'use client';
 
@@ -19,12 +19,12 @@ export default function AirlineFilter({ flights, carriers, selectedAirlines, onC
   const airlineOptions = useMemo(() => {
     const stats = new Map<string, { count: number; minPrice: number }>();
     flights.forEach((f) => {
-      const existing = stats.get(f.airline);
+      const existing = stats.get(f.airlineCode);
       if (existing) {
         existing.count++;
         existing.minPrice = Math.min(existing.minPrice, f.price);
       } else {
-        stats.set(f.airline, { count: 1, minPrice: f.price });
+        stats.set(f.airlineCode, { count: 1, minPrice: f.price });
       }
     });
 

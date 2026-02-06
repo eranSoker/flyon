@@ -1,4 +1,4 @@
-// FlyOn — TypeScript Types v1.0.2 | 2026-02-06
+// FlyOn — TypeScript Types v1.9.0 | 2026-02-06
 
 // ----- Amadeus API Response Types -----
 
@@ -43,15 +43,16 @@ export interface Segment {
   duration: string; // ISO 8601: "PT2H30M"
   id: string;
   numberOfStops: number;
-  blacklistedInEU: boolean;
+  blacklistedInEU?: boolean;
 }
 
 export interface OfferPrice {
   currency: string;
   total: string;
   base: string;
-  fees: { amount: string; type: string }[];
+  fees?: { amount: string; type: string }[];
   grandTotal: string;
+  additionalServices?: { amount: string; type: string }[];
 }
 
 export interface TravelerPricing {
@@ -70,12 +71,26 @@ export interface FareDetail {
   segmentId: string;
   cabin: string;
   fareBasis: string;
+  brandedFare?: string;
+  brandedFareLabel?: string;
   class: string;
   includedCheckedBags?: {
     weight?: number;
     weightUnit?: string;
     quantity?: number;
   };
+  includedCabinBags?: {
+    weight?: number;
+    weightUnit?: string;
+    quantity?: number;
+  };
+  amenities?: Amenity[];
+}
+
+export interface Amenity {
+  description: string;
+  isChargeable: boolean;
+  amenityType: string;
 }
 
 export interface AmadeusFlightResponse {
@@ -107,6 +122,11 @@ export interface AmadeusLocation {
     countryCode: string;
     regionCode?: string;
   };
+  analytics?: {
+    travelers: {
+      score: number;
+    };
+  };
 }
 
 // ----- App-Level Types -----
@@ -116,21 +136,50 @@ export interface Airport {
   name: string;
   cityName: string;
   countryCode: string;
+  countryName?: string;
+  subType?: 'AIRPORT' | 'CITY';
+  detailedName?: string;
+  score?: number;
+}
+
+export interface Layover {
+  airport: string;  // IATA code
+  duration: number; // minutes
+}
+
+export interface ReturnInfo {
+  stops: number;
+  duration: number;       // minutes
+  departureTime: string;  // ISO datetime
+  arrivalTime: string;    // ISO datetime
+  segments: Segment[];
 }
 
 export interface Flight {
   id: string;
   price: number;
   currency: string;
-  airline: string;
-  airlineName: string;
-  stops: number;
-  duration: number; // total minutes (outbound)
-  departureTime: string; // ISO datetime string
-  arrivalTime: string;
-  origin: string;
-  destination: string;
-  itineraries: Itinerary[];
+  basePrice: number;
+  airlineCode: string;     // carrier code e.g. "UX"
+  airlineName: string;     // display name e.g. "AIR EUROPA"
+  aircraftNames: string[];
+  stops: number;           // 0 = nonstop, 1 = 1 stop, etc.
+  duration: number;        // total minutes (outbound)
+  departureTime: string;   // ISO datetime
+  arrivalTime: string;     // ISO datetime
+  origin: string;          // IATA code
+  destination: string;     // IATA code
+  departureTerminal?: string;
+  arrivalTerminal?: string;
+  cabin: string;           // "ECONOMY", "BUSINESS", etc.
+  brandedFare?: string;    // "LITE", "LIGHT", etc.
+  checkedBags: number;
+  cabinBags: number;
+  bagFee: number | null;   // cost to add checked bag
+  amenities: string[];     // free amenities
+  layovers: Layover[];
+  returnFlight?: ReturnInfo;
+  itineraries: Itinerary[]; // full itineraries for details view
   raw: AmadeusFlightOffer;
 }
 

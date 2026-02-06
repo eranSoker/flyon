@@ -1,4 +1,4 @@
-// FlyOn — PriceCalendar Component v1.7.0 | 2026-02-06
+// FlyOn — PriceCalendar Component v1.9.0 | 2026-02-06
 
 'use client';
 
@@ -47,7 +47,7 @@ export default function PriceCalendar({ origin, destination, selectedDate, onDat
   const today = startOfDay(new Date());
   const canGoPrev = !isBefore(subMonths(currentMonth, 1), startOfMonth(today));
 
-  const currency = days[0]?.minPrice !== null ? 'USD' : 'USD';
+  const currency = 'EUR';
 
   const calendarCells = useMemo(() => {
     const cells: Array<{ date: string; dayNum: number; price: number | null; loading: boolean; isPast: boolean } | null> = [];

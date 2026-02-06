@@ -1,6 +1,6 @@
 # flyon — Flight Search Engine
 
-**Version:** 1.8.2
+**Version:** 1.9.0
 **Last Updated:** 2026-02-06
 
 A responsive Flight Search Engine inspired by Google Flights' utility, with an original design and UX. Built with Next.js 15, TypeScript, and the Amadeus Self-Service API.
@@ -94,7 +94,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ## Architecture Decisions
 
 ### Server-side API Proxy
-All Amadeus API calls go through Next.js Route Handlers (`/api/airports`, `/api/flights`, `/api/price-analysis`). API keys never reach the client.
+All Amadeus API calls go through Next.js Route Handlers (`/api/airports`, `/api/flights`, `/api/price-calendar`). API keys never reach the client. Server-side caching (24h for airports, 15min for calendar) reduces API calls.
 
 ### Client-side Filtering
 Flights are fetched once from the API and stored in React Context. All filtering, sorting, and chart data derivation happens client-side using `useMemo`. This means filter changes are instant — no network round-trips.
@@ -122,14 +122,17 @@ AMADEUS_BASE_URL=https://test.api.amadeus.com
 
 The Amadeus test environment has limited data. These routes reliably return results:
 
-- **JFK → LAX** — Domestic US, many results
-- **NYC → LON** — Transatlantic, varied stops
-- **MAD → BCN** — European short-haul
-- **CDG → FCO** — European
+- **MAD → MUC** — Tested, returns Air Europa + ITA Airways, direct + connections
+- **MAD → CDG** — Good variety, Iberia + Air France
+- **LON → PAR** — Classic European route
+- **FCO → BCN** — ITA Airways results
+- **CDG → FCO** — Air France + ITA
 
 ## Known Limitations
 
 - **Test API data** — Prices and availability are simulated, not real-time
-- **Rate limits** — ~10 requests/second in test mode (handled with exponential backoff)
-- **Price calendar** — Uses batch flight-offers requests as fallback, may be slow for full months
+- **Rate limits** — ~10 requests/second in test mode (handled with exponential backoff and batching)
+- **Price calendar** — Built from batched Flight Offers Search requests (~30 API calls); cached for 15 minutes
 - **Limited route coverage** — Not all airport pairs return results in test mode
+- **Only 2 working endpoints** — Airport Autocomplete and Flight Offers Search. Price Metrics and Cheapest Date endpoints are decommissioned/unavailable in test mode
+- **Default currency** — EUR (Amadeus test environment default)

@@ -1,21 +1,21 @@
-// FlyOn — FlightDetails Component v1.3.1 | 2026-02-06
+// FlyOn — FlightDetails Component v1.9.0 | 2026-02-06
 
 'use client';
 
-import type { Itinerary } from '@/lib/types';
-import { formatTime, formatDuration, parseDurationToMinutes, formatMinutesToDuration } from '@/lib/formatters';
+import type { Flight } from '@/lib/types';
+import { formatTime, formatDuration, formatMinutesToDuration } from '@/lib/formatters';
 import { AIRLINE_NAMES } from '@/lib/constants';
 import styles from './FlightDetails.module.css';
 
 interface FlightDetailsProps {
-  itineraries: Itinerary[];
+  flight: Flight;
   carriers: Record<string, string>;
 }
 
-export default function FlightDetails({ itineraries, carriers }: FlightDetailsProps) {
+export default function FlightDetails({ flight, carriers }: FlightDetailsProps) {
   return (
     <div className={styles.details}>
-      {itineraries.map((itinerary, itinIdx) => (
+      {flight.itineraries.map((itinerary, itinIdx) => (
         <div key={itinIdx} className={styles.itinerary}>
           <h4 className={styles.itineraryLabel}>
             {itinIdx === 0 ? 'Outbound' : 'Return'} — {formatDuration(itinerary.duration)}
@@ -77,6 +77,40 @@ export default function FlightDetails({ itineraries, carriers }: FlightDetailsPr
           </div>
         </div>
       ))}
+
+      {/* Fare details */}
+      <div className={styles.fareDetails}>
+        <div className={styles.fareRow}>
+          <span className={styles.fareLabel}>Cabin bags</span>
+          <span className={styles.fareValue}>
+            {flight.cabinBags > 0 ? `${flight.cabinBags} included` : 'Not included'}
+          </span>
+        </div>
+        <div className={styles.fareRow}>
+          <span className={styles.fareLabel}>Checked bags</span>
+          <span className={styles.fareValue}>
+            {flight.checkedBags > 0
+              ? `${flight.checkedBags} included`
+              : flight.bagFee !== null
+                ? `From ${formatBagFee(flight.bagFee, flight.currency)}`
+                : 'Not included'}
+          </span>
+        </div>
+        {flight.aircraftNames.length > 0 && (
+          <div className={styles.fareRow}>
+            <span className={styles.fareLabel}>Aircraft</span>
+            <span className={styles.fareValue}>{flight.aircraftNames.join(', ')}</span>
+          </div>
+        )}
+        {flight.amenities.length > 0 && (
+          <div className={styles.fareRow}>
+            <span className={styles.fareLabel}>Included</span>
+            <span className={styles.fareValue}>
+              {flight.amenities.map((a) => a.charAt(0) + a.slice(1).toLowerCase()).join(', ')}
+            </span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -86,4 +120,13 @@ function formatLayover(arrivalTime: string, nextDepartureTime: string): string {
   const departure = new Date(nextDepartureTime).getTime();
   const diffMinutes = Math.round((departure - arrival) / 60000);
   return formatMinutesToDuration(diffMinutes);
+}
+
+function formatBagFee(amount: number, currency: string): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount);
 }

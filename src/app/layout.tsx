@@ -1,4 +1,4 @@
-// FlyOn — Root Layout v1.8.2 | 2026-02-06
+// FlyOn — Root Layout v1.9.0 | 2026-02-06
 
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';

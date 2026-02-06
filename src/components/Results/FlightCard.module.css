@@ -1,4 +1,4 @@
-/* FlyOn — FlightCard Styles v1.3.1 | 2026-02-06 */
+/* FlyOn — FlightCard Styles v1.9.0 | 2026-02-06 */
 
 .card {
   position: relative;
@@ -148,6 +148,12 @@
 .airlineName {
   font-size: var(--text-sm);
   color: var(--color-text-secondary);
+  text-align: right;
+}
+
+.cabinInfo {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
   text-align: right;
 }
 

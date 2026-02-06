@@ -1,9 +1,10 @@
-// FlyOn — usePriceAnalysis Hook v1.7.0 | 2026-02-06
+// FlyOn — usePriceAnalysis Hook v1.9.0 | 2026-02-06
+// Uses /api/price-calendar endpoint (batched Flight Offers Search)
 
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, addMonths, isBefore, startOfDay } from 'date-fns';
+import { format, startOfMonth, endOfMonth, eachDayOfInterval, isBefore, startOfDay } from 'date-fns';
 import type { PriceCalendarDay } from '@/lib/types';
 
 interface UsePriceAnalysisParams {
@@ -39,67 +40,64 @@ export function usePriceAnalysis({ origin, destination, month }: UsePriceAnalysi
     setDays(initialDays);
     setLoading(true);
 
-    // Only fetch for future dates
-    const futureDays = allDays.filter((d) => !isBefore(d, today));
+    // Use the middle of the month as the center date for the API request
+    const centerDay = Math.min(15, monthEnd.getDate());
+    const centerDate = format(
+      new Date(monthStart.getFullYear(), monthStart.getMonth(), centerDay),
+      'yyyy-MM-dd'
+    );
 
-    // Batch requests: fetch 5 dates at a time to avoid rate limiting
-    const batchSize = 5;
-    const results = new Map<string, number | null>();
-
-    for (let i = 0; i < futureDays.length; i += batchSize) {
-      if (abortRef.current.signal.aborted) return;
-
-      const batch = futureDays.slice(i, i + batchSize);
-      const promises = batch.map(async (day) => {
-        const dateStr = format(day, 'yyyy-MM-dd');
-        try {
-          const params = new URLSearchParams({
-            origin,
-            destination,
-            departureDate: dateStr,
-          });
-          const res = await fetch(`/api/price-analysis?${params}`, {
-            signal: abortRef.current!.signal,
-          });
-          if (!res.ok) {
-            results.set(dateStr, null);
-            return;
-          }
-          const data = await res.json();
-
-          if (data.fallback && data.flightOffers?.data?.length > 0) {
-            const prices = data.flightOffers.data.map((o: { price: { grandTotal: string } }) =>
-              parseFloat(o.price.grandTotal)
-            );
-            results.set(dateStr, Math.min(...prices));
-          } else if (data.data?.length > 0) {
-            const firstMetric = data.data[0];
-            const price = firstMetric?.priceMetrics?.find(
-              (m: { quartileRanking: string }) => m.quartileRanking === 'MINIMUM'
-            );
-            results.set(dateStr, price ? parseFloat(price.amount) : null);
-          } else {
-            results.set(dateStr, null);
-          }
-        } catch {
-          results.set(dateStr, null);
-        }
+    try {
+      const params = new URLSearchParams({
+        origin,
+        destination,
+        date: centerDate,
       });
 
-      await Promise.allSettled(promises);
+      const res = await fetch(`/api/price-calendar?${params}`, {
+        signal: abortRef.current.signal,
+      });
 
-      // Progressive update
-      setDays((prev) =>
-        prev.map((d) => {
-          if (results.has(d.date)) {
-            return { ...d, minPrice: results.get(d.date) ?? null, loading: false };
-          }
-          return d;
+      if (!res.ok) {
+        setLoading(false);
+        return;
+      }
+
+      const data = await res.json();
+      const calendarData: Array<{ date: string; price: number | null; currency: string }> =
+        data.data || [];
+
+      // Map results to PriceCalendarDay format
+      const priceMap = new Map<string, number | null>();
+      calendarData.forEach((entry) => {
+        priceMap.set(entry.date, entry.price);
+      });
+
+      setDays(
+        allDays.map((d) => {
+          const dateStr = format(d, 'yyyy-MM-dd');
+          const isPast = isBefore(d, today);
+          return {
+            date: dateStr,
+            minPrice: isPast ? null : (priceMap.get(dateStr) ?? null),
+            loading: false,
+          };
         })
       );
+    } catch (error) {
+      if (error instanceof Error && error.name !== 'AbortError') {
+        // On error, just show no prices
+        setDays(
+          allDays.map((d) => ({
+            date: format(d, 'yyyy-MM-dd'),
+            minPrice: null,
+            loading: false,
+          }))
+        );
+      }
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }, [origin, destination, month]);
 
   useEffect(() => {
