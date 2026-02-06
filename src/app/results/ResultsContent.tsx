@@ -1,4 +1,4 @@
-// FlyOn — ResultsContent v1.4.1 | 2026-02-06
+// FlyOn — ResultsContent v1.5.0 | 2026-02-06
 
 'use client';
 
@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import SearchForm from '@/components/SearchForm/SearchForm';
 import FlightList from '@/components/Results/FlightList';
 import FilterPanel from '@/components/Filters/FilterPanel';
+import PriceGraph from '@/components/PriceGraph/PriceGraph';
 import SkeletonCard from '@/components/Skeleton/SkeletonCard';
 import SkeletonGraph from '@/components/Skeleton/SkeletonGraph';
 import { useFlightSearch } from '@/hooks/useFlightSearch';
@@ -122,11 +123,19 @@ export default function ResultsContent() {
               </button>
             </div>
           ) : (
-            <FlightList
-              flights={filteredFlights}
-              totalCount={state.flights.length}
-              carriers={state.carriers}
-            />
+            <>
+              {filteredFlights.length > 0 && (
+                <PriceGraph
+                  flights={filteredFlights}
+                  carriers={state.carriers}
+                />
+              )}
+              <FlightList
+                flights={filteredFlights}
+                totalCount={state.flights.length}
+                carriers={state.carriers}
+              />
+            </>
           )}
         </div>
       </div>
