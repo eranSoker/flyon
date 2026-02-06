@@ -7,6 +7,18 @@
   border-radius: var(--radius-md);
   overflow: hidden;
   transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+  animation: cardFadeIn var(--transition-base) ease-out;
+}
+
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .card:hover {

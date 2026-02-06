@@ -1,4 +1,4 @@
-/* FlyOn — Global Styles v1.0.1 | 2026-02-06 */
+/* FlyOn — Global Styles v1.8.0 | 2026-02-06 */
 
 @import '../styles/variables.css';
 
@@ -109,4 +109,29 @@ img, svg {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-text-muted);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn var(--transition-base) ease-out;
+}
+
+.animate-fadeSlideIn {
+  animation: fadeSlideIn var(--transition-base) ease-out;
 }
