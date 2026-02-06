@@ -1,8 +1,8 @@
-// FlyOn — ResultsContent v1.9.0 | 2026-02-06
+// FlyOn — ResultsContent v1.9.1 | 2026-02-06
 
 'use client';
 
-import { useMemo, useState, useCallback } from 'react';
+import { useMemo, useState, useCallback, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -28,6 +28,23 @@ export default function ResultsContent() {
   const { updateURLParams } = useURLState();
   const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const rafRef = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(() => {
+        setIsScrolled(window.scrollY > 50);
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
 
   const origin = searchParams.get('origin');
   const destination = searchParams.get('destination');
@@ -116,7 +133,7 @@ export default function ResultsContent() {
 
   return (
     <div className={styles.content}>
-      <div className={styles.searchBar}>
+      <div className={`${styles.searchBar} ${isScrolled ? styles.searchBarScrolled : ''}`}>
         <div className={styles.searchBarHeader}>
           <Link href="/" className={styles.logoLink}>
             <Image

@@ -1,4 +1,4 @@
-/* FlyOn — Results Page Styles v1.9.0 | 2026-02-06 */
+/* FlyOn — Results Page Styles v1.9.1 | 2026-02-06 */
 
 .main {
   min-height: 100vh;
@@ -18,12 +18,28 @@
   z-index: var(--z-sticky);
   background: var(--color-background);
   padding-bottom: var(--space-sm);
+  transition: padding var(--transition-base);
 }
 
 .searchBarHeader {
   display: flex;
   align-items: center;
   margin-bottom: var(--space-sm);
+  max-height: 60px;
+  opacity: 1;
+  overflow: hidden;
+  transition: max-height var(--transition-base), opacity var(--transition-fast),
+    margin var(--transition-base);
+}
+
+.searchBarScrolled {
+  padding-bottom: 4px;
+}
+
+.searchBarScrolled .searchBarHeader {
+  max-height: 0;
+  opacity: 0;
+  margin-bottom: 0;
 }
 
 .logoLink {
