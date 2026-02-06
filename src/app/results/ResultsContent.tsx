@@ -1,4 +1,4 @@
-// FlyOn — ResultsContent v1.6.0 | 2026-02-06
+// FlyOn — ResultsContent v1.7.0 | 2026-02-06
 
 'use client';
 
@@ -8,12 +8,14 @@ import SearchForm from '@/components/SearchForm/SearchForm';
 import FlightList from '@/components/Results/FlightList';
 import FilterPanel from '@/components/Filters/FilterPanel';
 import PriceGraph from '@/components/PriceGraph/PriceGraph';
+import PriceCalendar from '@/components/PriceCalendar/PriceCalendar';
 import SkeletonCard from '@/components/Skeleton/SkeletonCard';
 import SkeletonGraph from '@/components/Skeleton/SkeletonGraph';
 import Modal from '@/components/ui/Modal';
 import Button from '@/components/ui/Button';
 import { useFlightSearch } from '@/hooks/useFlightSearch';
 import { useSearch } from '@/context/SearchContext';
+import { useURLState } from '@/hooks/useURLState';
 import { SORT_OPTIONS } from '@/lib/constants';
 import type { Airport, CabinClass, FilterState, SearchParams, SortOption } from '@/lib/types';
 import styles from './results.module.css';
@@ -21,7 +23,9 @@ import styles from './results.module.css';
 export default function ResultsContent() {
   const searchParams = useSearchParams();
   const { state, dispatch, filteredFlights } = useSearch();
+  const { updateURLParams } = useURLState();
   const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
 
   const origin = searchParams.get('origin');
   const destination = searchParams.get('destination');
@@ -89,6 +93,13 @@ export default function ResultsContent() {
   const handleClearFilters = useCallback(
     () => dispatch({ type: 'CLEAR_FILTERS' }),
     [dispatch]
+  );
+
+  const handleCalendarDateSelect = useCallback(
+    (date: string) => {
+      updateURLParams({ departureDate: date });
+    },
+    [updateURLParams]
   );
 
   const filterPanelElement = !state.loading && state.flights.length > 0 && (
@@ -168,6 +179,30 @@ export default function ResultsContent() {
                   flights={filteredFlights}
                   carriers={state.carriers}
                 />
+              )}
+              {origin && destination && (
+                <div className={styles.calendarSection}>
+                  <button
+                    className={styles.calendarToggle}
+                    onClick={() => setShowCalendar((prev) => !prev)}
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16" aria-hidden="true">
+                      <rect x="3" y="4" width="18" height="18" rx="2" />
+                      <line x1="16" y1="2" x2="16" y2="6" />
+                      <line x1="8" y1="2" x2="8" y2="6" />
+                      <line x1="3" y1="10" x2="21" y2="10" />
+                    </svg>
+                    {showCalendar ? 'Hide' : 'Show'} price calendar
+                  </button>
+                  {showCalendar && (
+                    <PriceCalendar
+                      origin={origin}
+                      destination={destination}
+                      selectedDate={departureDate || ''}
+                      onDateSelect={handleCalendarDateSelect}
+                    />
+                  )}
+                </div>
               )}
               <FlightList
                 flights={filteredFlights}

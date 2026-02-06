@@ -1,0 +1,166 @@
+/* FlyOn — PriceCalendar Styles v1.7.0 | 2026-02-06 */
+
+.container {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+
+.navBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.navBtn:hover:not(:disabled) {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.navBtn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.monthTitle {
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-bottom: var(--space-xs);
+}
+
+.weekday {
+  text-align: center;
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  color: var(--color-text-muted);
+  padding: var(--space-xs) 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.emptyCell {
+  aspect-ratio: 1;
+}
+
+.dayCell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  aspect-ratio: 1;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: 2px solid transparent;
+  background: var(--color-background);
+  min-height: 44px;
+}
+
+.dayCell:hover:not(:disabled) {
+  border-color: var(--color-primary);
+}
+
+.dayCell:disabled {
+  cursor: not-allowed;
+}
+
+.past {
+  opacity: 0.4;
+}
+
+.selected {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.cheap {
+  background: var(--color-price-cheap-bg);
+}
+
+.mid {
+  background: var(--color-price-mid-bg);
+}
+
+.expensive {
+  background: var(--color-price-expensive-bg);
+}
+
+.dayNum {
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  color: var(--color-text-primary);
+}
+
+.dayPrice {
+  font-size: 10px;
+  font-weight: var(--font-semibold);
+  color: var(--color-text-secondary);
+}
+
+.cheap .dayPrice {
+  color: var(--color-price-cheap);
+}
+
+.expensive .dayPrice {
+  color: var(--color-price-expensive);
+}
+
+.dayPriceLoading {
+  width: 28px;
+  height: 8px;
+  background: linear-gradient(
+    90deg,
+    var(--color-border) 25%,
+    #f0f0f0 50%,
+    var(--color-border) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 2px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .container {
+    padding: var(--space-md);
+  }
+
+  .dayCell {
+    min-height: 36px;
+  }
+
+  .dayPrice {
+    font-size: 8px;
+  }
+}
