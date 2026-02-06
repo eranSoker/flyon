@@ -1,4 +1,4 @@
-/* FlyOn — Results Page Styles v1.6.0 | 2026-02-06 */
+/* FlyOn — Results Page Styles v1.8.2 | 2026-02-06 */
 
 .main {
   min-height: 100vh;
@@ -18,6 +18,22 @@
   z-index: var(--z-sticky);
   background: var(--color-background);
   padding-bottom: var(--space-sm);
+}
+
+.searchBarHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+}
+
+.logoLink {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logoImg {
+  height: auto;
 }
 
 .resultsLayout {

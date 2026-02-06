@@ -1,6 +1,6 @@
-# FlyOn — Flight Search Engine
+# flyon — Flight Search Engine
 
-**Version:** 1.8.1
+**Version:** 1.8.2
 **Last Updated:** 2026-02-06
 
 A responsive Flight Search Engine inspired by Google Flights' utility, with an original design and UX. Built with Next.js 15, TypeScript, and the Amadeus Self-Service API.

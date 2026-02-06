@@ -1,9 +1,11 @@
-// FlyOn — ResultsContent v1.7.0 | 2026-02-06
+// FlyOn — ResultsContent v1.8.2 | 2026-02-06
 
 'use client';
 
 import { useMemo, useState, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
 import SearchForm from '@/components/SearchForm/SearchForm';
 import FlightList from '@/components/Results/FlightList';
 import FilterPanel from '@/components/Filters/FilterPanel';
@@ -115,6 +117,18 @@ export default function ResultsContent() {
   return (
     <div className={styles.content}>
       <div className={styles.searchBar}>
+        <div className={styles.searchBarHeader}>
+          <Link href="/" className={styles.logoLink}>
+            <Image
+              src="/flyon_logo.svg"
+              alt="flyon"
+              width={120}
+              height={40}
+              className={styles.logoImg}
+              priority
+            />
+          </Link>
+        </div>
         <SearchForm initialParams={initialParams} compact />
       </div>
 

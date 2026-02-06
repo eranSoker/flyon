@@ -1,4 +1,4 @@
-/* FlyOn — Home Page Styles v1.0.1 | 2026-02-06 */
+/* FlyOn — Home Page Styles v1.8.2 | 2026-02-06 */
 
 .main {
   min-height: 100vh;
@@ -6,7 +6,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding-top: 15vh;
+  padding-top: 12vh;
   padding-left: var(--space-md);
   padding-right: var(--space-md);
 }
@@ -14,12 +14,13 @@
 .hero {
   text-align: center;
   margin-bottom: var(--space-2xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.title {
-  font-size: var(--text-4xl);
-  font-weight: var(--font-bold);
-  color: var(--color-primary);
+.logo {
+  height: auto;
   margin-bottom: var(--space-sm);
 }
 
@@ -29,12 +30,18 @@
 }
 
 @media (min-width: 768px) {
-  .title {
-    font-size: 3.5rem;
+  .logo {
+    width: 360px;
   }
 
   .subtitle {
     font-size: var(--text-xl);
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    width: 220px;
   }
 }
 
