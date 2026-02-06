@@ -6,7 +6,14 @@
       "Bash(npx:*)",
       "Bash(git --version:*)",
       "WebSearch",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(git remote add:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nv1.0.1: Add design tokens, global styles, and root layout\n\nCreate CSS custom properties for colors, typography, spacing, radii, and shadows.\nSet up global reset, Inter font via next/font, root layout, and placeholder home page.\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git commit:*)"
     ]
   }
 }

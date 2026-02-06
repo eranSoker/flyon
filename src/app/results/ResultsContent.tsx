@@ -1,8 +1,8 @@
-// FlyOn — ResultsContent v1.5.0 | 2026-02-06
+// FlyOn — ResultsContent v1.6.0 | 2026-02-06
 
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import SearchForm from '@/components/SearchForm/SearchForm';
 import FlightList from '@/components/Results/FlightList';
@@ -10,6 +10,8 @@ import FilterPanel from '@/components/Filters/FilterPanel';
 import PriceGraph from '@/components/PriceGraph/PriceGraph';
 import SkeletonCard from '@/components/Skeleton/SkeletonCard';
 import SkeletonGraph from '@/components/Skeleton/SkeletonGraph';
+import Modal from '@/components/ui/Modal';
+import Button from '@/components/ui/Button';
 import { useFlightSearch } from '@/hooks/useFlightSearch';
 import { useSearch } from '@/context/SearchContext';
 import { SORT_OPTIONS } from '@/lib/constants';
@@ -19,6 +21,7 @@ import styles from './results.module.css';
 export default function ResultsContent() {
   const searchParams = useSearchParams();
   const { state, dispatch, filteredFlights } = useSearch();
+  const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
 
   const origin = searchParams.get('origin');
   const destination = searchParams.get('destination');
@@ -68,6 +71,36 @@ export default function ResultsContent() {
     return params;
   }, [origin, destination, departureDate, returnDate, adults, children, infants, cabinClass, searchParams]);
 
+  const activeFilterCount = useMemo(() => {
+    const f = state.filters;
+    let count = 0;
+    if (f.stops.length > 0) count++;
+    if (f.airlines.length > 0) count++;
+    if (f.departureTimeRange[0] > 0 || f.departureTimeRange[1] < 24) count++;
+    if (f.arrivalTimeRange[0] > 0 || f.arrivalTimeRange[1] < 24) count++;
+    return count;
+  }, [state.filters]);
+
+  const handleFilterChange = useCallback(
+    (updates: Partial<FilterState>) => dispatch({ type: 'SET_FILTER', payload: updates }),
+    [dispatch]
+  );
+
+  const handleClearFilters = useCallback(
+    () => dispatch({ type: 'CLEAR_FILTERS' }),
+    [dispatch]
+  );
+
+  const filterPanelElement = !state.loading && state.flights.length > 0 && (
+    <FilterPanel
+      flights={state.flights}
+      carriers={state.carriers}
+      filters={state.filters}
+      onFilterChange={handleFilterChange}
+      onClearFilters={handleClearFilters}
+    />
+  );
+
   return (
     <div className={styles.content}>
       <div className={styles.searchBar}>
@@ -75,20 +108,26 @@ export default function ResultsContent() {
       </div>
 
       <div className={styles.resultsLayout}>
+        {/* Desktop sidebar */}
         <div className={styles.sidebar}>
-          {!state.loading && state.flights.length > 0 && (
-            <FilterPanel
-              flights={state.flights}
-              carriers={state.carriers}
-              filters={state.filters}
-              onFilterChange={(updates: Partial<FilterState>) => dispatch({ type: 'SET_FILTER', payload: updates })}
-              onClearFilters={() => dispatch({ type: 'CLEAR_FILTERS' })}
-            />
-          )}
+          {filterPanelElement}
         </div>
 
         <div className={styles.mainContent}>
           <div className={styles.toolbar}>
+            {/* Mobile filter button */}
+            <button
+              className={styles.mobileFilterBtn}
+              onClick={() => setFilterDrawerOpen(true)}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18" aria-hidden="true">
+                <line x1="4" y1="6" x2="20" y2="6" />
+                <line x1="6" y1="12" x2="18" y2="12" />
+                <line x1="8" y1="18" x2="16" y2="18" />
+              </svg>
+              Filters{activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}
+            </button>
+
             <div className={styles.sortContainer}>
               <label className={styles.sortLabel}>Sort by:</label>
               <select
@@ -139,6 +178,26 @@ export default function ResultsContent() {
           )}
         </div>
       </div>
+
+      {/* Mobile filter drawer */}
+      <Modal
+        isOpen={filterDrawerOpen}
+        onClose={() => setFilterDrawerOpen(false)}
+        title="Filters"
+        variant="drawer"
+        footer={
+          <div className={styles.drawerFooter}>
+            <Button variant="ghost" size="sm" onClick={handleClearFilters}>
+              Clear all
+            </Button>
+            <Button variant="primary" size="md" onClick={() => setFilterDrawerOpen(false)}>
+              Show {filteredFlights.length} results
+            </Button>
+          </div>
+        }
+      >
+        {filterPanelElement}
+      </Modal>
     </div>
   );
 }
