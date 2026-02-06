@@ -1,4 +1,4 @@
-// FlyOn — ResultsContent v1.3.1 | 2026-02-06
+// FlyOn — ResultsContent v1.3.2 | 2026-02-06
 
 'use client';
 
@@ -6,6 +6,8 @@ import { useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import SearchForm from '@/components/SearchForm/SearchForm';
 import FlightList from '@/components/Results/FlightList';
+import SkeletonCard from '@/components/Skeleton/SkeletonCard';
+import SkeletonGraph from '@/components/Skeleton/SkeletonGraph';
 import { useFlightSearch } from '@/hooks/useFlightSearch';
 import { useSearch } from '@/context/SearchContext';
 import { SORT_OPTIONS } from '@/lib/constants';
@@ -94,9 +96,11 @@ export default function ResultsContent() {
           </div>
 
           {state.loading ? (
-            <div className={styles.loadingState}>
-              <div className={styles.spinner} />
-              <p>Searching flights...</p>
+            <div className={styles.skeletonList}>
+              <SkeletonGraph />
+              {Array.from({ length: 5 }).map((_, i) => (
+                <SkeletonCard key={i} />
+              ))}
             </div>
           ) : state.error ? (
             <div className={styles.errorState}>

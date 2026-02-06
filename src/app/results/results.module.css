@@ -122,6 +122,12 @@
   background: var(--color-primary-hover);
 }
 
+.skeletonList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .sidebar {

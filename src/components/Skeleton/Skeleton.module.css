@@ -1,0 +1,139 @@
+/* FlyOn — Skeleton Styles v1.3.2 | 2026-02-06 */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-border) 25%,
+    #f0f0f0 50%,
+    var(--color-border) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Skeleton Card */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--space-lg);
+  align-items: center;
+}
+
+.priceBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.priceLine {
+  width: 72px;
+  height: 24px;
+}
+
+.priceSubline {
+  width: 48px;
+  height: 12px;
+}
+
+.flightBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.timesRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.timeLine {
+  width: 64px;
+  height: 16px;
+}
+
+.routeLine {
+  flex: 1;
+  height: 2px;
+}
+
+.metaRow {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.metaLine {
+  width: 80px;
+  height: 12px;
+}
+
+.airlineBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-xs);
+}
+
+.airlineLine {
+  width: 96px;
+  height: 14px;
+}
+
+.expandLine {
+  width: 20px;
+  height: 10px;
+}
+
+/* Skeleton Graph */
+.graph {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+}
+
+.graphHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--space-lg);
+}
+
+.graphTitle {
+  width: 120px;
+  height: 16px;
+}
+
+.graphToggle {
+  width: 200px;
+  height: 16px;
+}
+
+.graphBars {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-sm);
+  height: 160px;
+}
+
+.graphBar {
+  flex: 1;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .card {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+}
