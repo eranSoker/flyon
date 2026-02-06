@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node:*)",
+      "Bash(npm --version:*)",
+      "Bash(npx:*)",
+      "Bash(git --version:*)",
+      "WebSearch",
+      "Bash(npm install:*)"
+    ]
+  }
+}
