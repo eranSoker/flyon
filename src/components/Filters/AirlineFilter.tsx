@@ -1,4 +1,4 @@
-// FlyOn — AirlineFilter Component v1.9.0 | 2026-02-06
+// FlyOn — AirlineFilter Component v1.9.2 | 2026-02-06
 
 'use client';
 
@@ -40,9 +40,16 @@ export default function AirlineFilter({ flights, carriers, selectedAirlines, onC
 
   const handleToggle = (code: string, checked: boolean) => {
     if (checked) {
-      onChange([...selectedAirlines, code]);
+      const newSelected = [...selectedAirlines, code];
+      // All airlines selected → clear to empty (meaning "show all")
+      onChange(newSelected.length === airlineOptions.length ? [] : newSelected);
     } else {
-      onChange(selectedAirlines.filter((a) => a !== code));
+      if (selectedAirlines.length === 0) {
+        // Empty = "show all" → switch to all EXCEPT unchecked one
+        onChange(airlineOptions.filter((a) => a.code !== code).map((a) => a.code));
+      } else {
+        onChange(selectedAirlines.filter((a) => a !== code));
+      }
     }
   };
 
