@@ -1,4 +1,4 @@
-// FlyOn — ResultsContent v1.3.2 | 2026-02-06
+// FlyOn — ResultsContent v1.4.1 | 2026-02-06
 
 'use client';
 
@@ -6,12 +6,13 @@ import { useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import SearchForm from '@/components/SearchForm/SearchForm';
 import FlightList from '@/components/Results/FlightList';
+import FilterPanel from '@/components/Filters/FilterPanel';
 import SkeletonCard from '@/components/Skeleton/SkeletonCard';
 import SkeletonGraph from '@/components/Skeleton/SkeletonGraph';
 import { useFlightSearch } from '@/hooks/useFlightSearch';
 import { useSearch } from '@/context/SearchContext';
 import { SORT_OPTIONS } from '@/lib/constants';
-import type { Airport, CabinClass, SearchParams, SortOption } from '@/lib/types';
+import type { Airport, CabinClass, FilterState, SearchParams, SortOption } from '@/lib/types';
 import styles from './results.module.css';
 
 export default function ResultsContent() {
@@ -74,7 +75,15 @@ export default function ResultsContent() {
 
       <div className={styles.resultsLayout}>
         <div className={styles.sidebar}>
-          {/* FilterPanel will go here in Milestone 2 */}
+          {!state.loading && state.flights.length > 0 && (
+            <FilterPanel
+              flights={state.flights}
+              carriers={state.carriers}
+              filters={state.filters}
+              onFilterChange={(updates: Partial<FilterState>) => dispatch({ type: 'SET_FILTER', payload: updates })}
+              onClearFilters={() => dispatch({ type: 'CLEAR_FILTERS' })}
+            />
+          )}
         </div>
 
         <div className={styles.mainContent}>
