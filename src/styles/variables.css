@@ -1,0 +1,93 @@
+/* FlyOn — Design Tokens v1.0.1 | 2026-02-06 */
+
+:root {
+  /* Colors */
+  --color-primary: #1a56db;
+  --color-primary-hover: #1648b8;
+  --color-primary-light: #e8effc;
+  --color-primary-dark: #1040a0;
+  --color-secondary: #0e9f6e;
+  --color-secondary-light: #e6f7f1;
+  --color-surface: #ffffff;
+  --color-background: #f5f7fa;
+  --color-text-primary: #111827;
+  --color-text-secondary: #6b7280;
+  --color-text-muted: #9ca3af;
+  --color-border: #e5e7eb;
+  --color-border-focus: #1a56db;
+  --color-error: #e02424;
+  --color-error-light: #fde8e8;
+  --color-warning: #e3a008;
+  --color-warning-light: #fdf6b2;
+  --color-success: #0e9f6e;
+  --color-success-light: #def7ec;
+
+  /* Price calendar colors */
+  --color-price-cheap: #0e9f6e;
+  --color-price-cheap-bg: #def7ec;
+  --color-price-mid: #e3a008;
+  --color-price-mid-bg: #fdf6b2;
+  --color-price-expensive: #e02424;
+  --color-price-expensive-bg: #fde8e8;
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+
+  /* Spacing scale */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 12px 36px rgba(0, 0, 0, 0.16);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+
+  /* Z-index scale */
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-modal-backdrop: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+
+  /* Layout */
+  --max-width: 1280px;
+  --sidebar-width: 280px;
+  --header-height: 64px;
+}
