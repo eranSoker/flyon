@@ -1,0 +1,300 @@
+/* FlyOn — UI Primitives Styles v1.4.0 | 2026-02-06 */
+
+/* Button */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  font-weight: var(--font-medium);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btnPrimary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btnPrimary:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+.btnSecondary {
+  background: transparent;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+}
+
+.btnSecondary:hover:not(:disabled) {
+  background: var(--color-primary-light);
+}
+
+.btnGhost {
+  background: transparent;
+  color: var(--color-text-secondary);
+}
+
+.btnGhost:hover:not(:disabled) {
+  background: var(--color-background);
+  color: var(--color-text-primary);
+}
+
+.btnSm {
+  padding: 6px 12px;
+  font-size: var(--text-sm);
+}
+
+.btnMd {
+  padding: 10px 20px;
+  font-size: var(--text-base);
+}
+
+.btnLg {
+  padding: 14px 28px;
+  font-size: var(--text-lg);
+}
+
+/* Chip */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  border-radius: var(--radius-full);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: 1px solid transparent;
+}
+
+.chip:hover {
+  background: var(--color-primary);
+  color: white;
+}
+
+.chipActive {
+  background: var(--color-primary);
+  color: white;
+}
+
+.chipClose {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  font-size: 12px;
+  line-height: 1;
+}
+
+/* Checkbox */
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  user-select: none;
+}
+
+.checkboxInput {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--color-border);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.checkboxInput:checked {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.checkboxInput:checked::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 6px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checkboxInput:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Slider */
+.sliderContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  width: 100%;
+}
+
+.sliderTrack {
+  position: relative;
+  height: 6px;
+  background: var(--color-border);
+  border-radius: 3px;
+  margin: 16px 0;
+}
+
+.sliderFill {
+  position: absolute;
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: 3px;
+}
+
+.sliderThumb {
+  position: absolute;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  background: var(--color-surface);
+  border: 2px solid var(--color-primary);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  z-index: 2;
+  transition: box-shadow var(--transition-fast);
+  touch-action: none;
+}
+
+.sliderThumb:hover,
+.sliderThumb:active {
+  box-shadow: 0 0 0 6px var(--color-primary-light);
+}
+
+.sliderThumb:active {
+  cursor: grabbing;
+}
+
+.sliderLabels {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+/* Modal */
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: var(--z-modal-backdrop);
+  animation: fadeIn var(--transition-base);
+}
+
+.modal {
+  position: fixed;
+  z-index: var(--z-modal);
+}
+
+.modalDrawer {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-height: 85vh;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  animation: slideUp var(--transition-base);
+  overflow-y: auto;
+}
+
+.modalCenter {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 500px;
+  width: calc(100% - 32px);
+  max-height: 85vh;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  animation: fadeIn var(--transition-base);
+  overflow-y: auto;
+}
+
+.modalHandle {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-sm) 0;
+}
+
+.modalHandleBar {
+  width: 40px;
+  height: 4px;
+  background: var(--color-border);
+  border-radius: 2px;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.modalTitle {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+}
+
+.modalClose {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  color: var(--color-text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.modalClose:hover {
+  background: var(--color-background);
+  color: var(--color-text-primary);
+}
+
+.modalBody {
+  padding: var(--space-lg);
+}
+
+.modalFooter {
+  display: flex;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  border-top: 1px solid var(--color-border);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
