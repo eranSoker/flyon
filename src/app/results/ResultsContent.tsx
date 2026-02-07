@@ -1,4 +1,4 @@
-// FlyOn — ResultsContent v1.9.1 | 2026-02-06
+// FlyOn — ResultsContent v1.9.3 | 2026-02-07
 
 'use client';
 
@@ -18,7 +18,7 @@ import Button from '@/components/ui/Button';
 import { useFlightSearch } from '@/hooks/useFlightSearch';
 import { useSearch } from '@/context/SearchContext';
 import { useURLState } from '@/hooks/useURLState';
-import { SORT_OPTIONS } from '@/lib/constants';
+import { SORT_OPTIONS, CABIN_CLASS_LABELS } from '@/lib/constants';
 import type { Airport, CabinClass, FilterState, SearchParams, SortOption } from '@/lib/types';
 import styles from './results.module.css';
 
@@ -121,6 +121,30 @@ export default function ResultsContent() {
     [updateURLParams]
   );
 
+  const handleScrollToTop = useCallback(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  const summaryText = useMemo(() => {
+    const parts: string[] = [];
+    if (origin && destination) {
+      parts.push(`${origin} → ${destination}`);
+    }
+    if (departureDate) {
+      const depFormatted = new Date(departureDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      if (returnDate) {
+        const retFormatted = new Date(returnDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        parts.push(`${depFormatted} - ${retFormatted}`);
+      } else {
+        parts.push(depFormatted);
+      }
+    }
+    const totalPax = parseInt(adults, 10) + parseInt(children, 10) + parseInt(infants, 10);
+    parts.push(`${totalPax} traveler${totalPax !== 1 ? 's' : ''}`);
+    parts.push(CABIN_CLASS_LABELS[cabinClass as CabinClass] || 'Economy');
+    return parts.join('  |  ');
+  }, [origin, destination, departureDate, returnDate, adults, children, infants, cabinClass]);
+
   const filterPanelElement = !state.loading && state.flights.length > 0 && (
     <FilterPanel
       flights={state.flights}
@@ -146,7 +170,20 @@ export default function ResultsContent() {
             />
           </Link>
         </div>
-        <SearchForm initialParams={initialParams} compact />
+        <div className={styles.searchFormWrapper}>
+          <SearchForm initialParams={initialParams} compact />
+        </div>
+        <button
+          className={styles.summaryBar}
+          onClick={handleScrollToTop}
+          aria-label="Scroll to top to edit search"
+        >
+          <span className={styles.summaryText}>{summaryText}</span>
+          <svg className={styles.summaryEditIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16" aria-hidden="true">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+          </svg>
+        </button>
       </div>
 
       <div className={styles.resultsLayout}>

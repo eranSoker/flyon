@@ -1,4 +1,4 @@
-/* FlyOn — Results Page Styles v1.9.1 | 2026-02-06 */
+/* FlyOn — Results Page Styles v1.9.3 | 2026-02-07 */
 
 .main {
   min-height: 100vh;
@@ -32,6 +32,52 @@
     margin var(--transition-base);
 }
 
+.searchFormWrapper {
+  max-height: 300px;
+  opacity: 1;
+  overflow: hidden;
+  transition: max-height var(--transition-base), opacity var(--transition-fast);
+}
+
+.summaryBar {
+  display: none;
+  align-items: center;
+  gap: var(--space-md);
+  padding: 10px var(--space-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-base), opacity var(--transition-fast),
+    margin var(--transition-base), padding var(--transition-base);
+  margin: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.summaryBar:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.summaryText {
+  flex: 1;
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.summaryEditIcon {
+  flex-shrink: 0;
+  color: var(--color-primary);
+}
+
 .searchBarScrolled {
   padding-bottom: 4px;
 }
@@ -40,6 +86,20 @@
   max-height: 0;
   opacity: 0;
   margin-bottom: 0;
+}
+
+.searchBarScrolled .searchFormWrapper {
+  max-height: 0;
+  opacity: 0;
+}
+
+.searchBarScrolled .summaryBar {
+  display: flex;
+  max-height: 50px;
+  opacity: 1;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: var(--space-xs);
 }
 
 .logoLink {
@@ -60,6 +120,11 @@
 .sidebar {
   width: var(--sidebar-width);
   flex-shrink: 0;
+  position: sticky;
+  top: calc(60px + var(--space-md));
+  max-height: calc(100vh - 80px - var(--space-md));
+  overflow-y: auto;
+  align-self: flex-start;
 }
 
 .mainContent {
