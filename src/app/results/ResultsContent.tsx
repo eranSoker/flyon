@@ -131,12 +131,15 @@ export default function ResultsContent() {
       parts.push(`${origin} → ${destination}`);
     }
     if (departureDate) {
-      const depFormatted = new Date(departureDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const formatDate = (dateStr: string) => {
+        const [, m, d] = dateStr.split('-');
+        const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        return `${months[parseInt(m, 10) - 1]} ${parseInt(d, 10)}`;
+      };
       if (returnDate) {
-        const retFormatted = new Date(returnDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-        parts.push(`${depFormatted} - ${retFormatted}`);
+        parts.push(`${formatDate(departureDate)} - ${formatDate(returnDate)}`);
       } else {
-        parts.push(depFormatted);
+        parts.push(formatDate(departureDate));
       }
     }
     const totalPax = parseInt(adults, 10) + parseInt(children, 10) + parseInt(infants, 10);
