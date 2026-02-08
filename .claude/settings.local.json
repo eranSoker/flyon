@@ -13,7 +13,30 @@
       "Bash(git push:*)",
       "Bash(git add:*)",
       "Bash(git commit -m \"$\\(cat <<''EOF''\nv1.0.1: Add design tokens, global styles, and root layout\n\nCreate CSS custom properties for colors, typography, spacing, radii, and shadows.\nSet up global reset, Inter font via next/font, root layout, and placeholder home page.\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git rm:*)",
+      "Bash(curl:*)",
+      "Bash(findstr:*)",
+      "Bash(python:*)",
+      "Bash(powershell -command \"Measure-Command { curl -s http://localhost:3000/api/airports?keyword=LON -o NUL } | Select-Object -ExpandProperty TotalMilliseconds\")",
+      "Bash(del:*)",
+      "Bash(netstat:*)",
+      "Bash(taskkill:*)",
+      "Bash(tasklist:*)",
+      "Bash(wmic process:*)",
+      "Bash(powershell:*)",
+      "Bash(npm run dev:*)",
+      "WebFetch(domain:developers.amadeus.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(timeout:*)",
+      "Bash(ping:*)",
+      "Bash(npm run build:*)",
+      "Bash(for i in 1 2 3)",
+      "Bash(do echo \"Test $i:\")",
+      "Bash(done)",
+      "WebFetch(domain:127.0.0.1)",
+      "Bash(git -C C:Projectsflyon diff -- src/lib/countries.ts)",
+      "Bash(git -C C:Projectsflyon status)"
     ]
   }
 }
