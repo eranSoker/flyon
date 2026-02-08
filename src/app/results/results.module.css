@@ -1,4 +1,4 @@
-/* FlyOn — Results Page Styles v1.9.5 | 2026-02-08 */
+/* FlyOn — Results Page Styles v1.9.6 | 2026-02-08 */
 
 .main {
   min-height: 100vh;
@@ -213,19 +213,48 @@
   box-shadow: 0 0 0 3px var(--color-primary-light);
 }
 
-.loading {
+.loadingScreen {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 400px;
-  font-size: var(--text-lg);
-  color: var(--color-text-muted);
+  gap: var(--space-lg);
+  animation: fadeIn 0.4s ease-out;
 }
 
-.skeletonList {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.loadingIcon {
+  width: 64px;
+  height: 64px;
+  animation: loaderFloat 2s ease-in-out infinite;
+}
+
+@keyframes loaderFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.loadingText {
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-medium);
+}
+
+.loadingDots::after {
+  content: '';
+  animation: dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes dots {
+  0% { content: ''; }
+  25% { content: '.'; }
+  50% { content: '..'; }
+  75% { content: '...'; }
 }
 
 .errorState {

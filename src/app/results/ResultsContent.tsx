@@ -1,4 +1,4 @@
-// FlyOn — ResultsContent v1.9.5 | 2026-02-08
+// FlyOn — ResultsContent v1.9.6 | 2026-02-08
 
 'use client';
 
@@ -11,8 +11,6 @@ import FlightList from '@/components/Results/FlightList';
 import FilterPanel from '@/components/Filters/FilterPanel';
 import PriceGraph from '@/components/PriceGraph/PriceGraph';
 import PriceCalendar from '@/components/PriceCalendar/PriceCalendar';
-import SkeletonCard from '@/components/Skeleton/SkeletonCard';
-import SkeletonGraph from '@/components/Skeleton/SkeletonGraph';
 import Modal from '@/components/ui/Modal';
 import Button from '@/components/ui/Button';
 import { useFlightSearch } from '@/hooks/useFlightSearch';
@@ -231,11 +229,11 @@ export default function ResultsContent() {
           </div>
 
           {state.loading ? (
-            <div className={styles.skeletonList}>
-              <SkeletonGraph />
-              {Array.from({ length: 5 }).map((_, i) => (
-                <SkeletonCard key={i} />
-              ))}
+            <div className={styles.loadingScreen}>
+              <Image src="/flyon_icon.svg" alt="" width={64} height={64} className={styles.loadingIcon} />
+              <p className={styles.loadingText}>
+                Finding the best flights for you<span className={styles.loadingDots}></span>
+              </p>
             </div>
           ) : state.error ? (
             <div className={styles.errorState}>
