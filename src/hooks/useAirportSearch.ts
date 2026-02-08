@@ -1,4 +1,4 @@
-// FlyOn — useAirportSearch Hook v1.3.0 | 2026-02-06
+// FlyOn — useAirportSearch Hook v1.3.1 | 2026-02-06
 
 'use client';
 
@@ -43,7 +43,15 @@ export function useAirportSearch() {
           signal: abortRef.current.signal,
         });
         const data = await res.json();
-        setResults(data.data || []);
+        // Deduplicate by iataCode — API can return same code for sub-airports
+        const airports: Airport[] = data.data || [];
+        const seen = new Set<string>();
+        const unique = airports.filter((a) => {
+          if (seen.has(a.iataCode)) return false;
+          seen.add(a.iataCode);
+          return true;
+        });
+        setResults(unique);
       } catch (error) {
         if (error instanceof Error && error.name !== 'AbortError') {
           console.error('Airport search error:', error);

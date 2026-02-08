@@ -1,4 +1,4 @@
-// FlyOn — AirportInput Component v1.3.0 | 2026-02-06
+// FlyOn — AirportInput Component v1.3.1 | 2026-02-06
 
 'use client';
 
@@ -127,7 +127,7 @@ export default function AirportInput({ label, placeholder, value, onChange }: Ai
                 <span className={styles.optionCity}>{airport.cityName}</span>
                 <span className={styles.optionName}>{airport.name}</span>
               </span>
-              <span className={styles.optionCountry}>{airport.countryCode}</span>
+              <span className={styles.optionCountry}>{airport.countryName || airport.countryCode}</span>
             </li>
           ))}
         </ul>

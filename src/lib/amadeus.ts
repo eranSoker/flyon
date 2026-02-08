@@ -1,11 +1,12 @@
-// FlyOn — Amadeus API Client v1.9.0 | 2026-02-06
+// FlyOn — Amadeus API Client v1.9.4 | 2026-02-07
 
 const AMADEUS_BASE_URL = process.env.AMADEUS_BASE_URL || 'https://test.api.amadeus.com';
 const AMADEUS_API_KEY = process.env.AMADEUS_API_KEY;
 const AMADEUS_API_SECRET = process.env.AMADEUS_API_SECRET;
 
-const MAX_RETRIES = 3;
-const INITIAL_RETRY_DELAY = 1000;
+const MAX_RETRIES = 2;
+const INITIAL_RETRY_DELAY = 500;
+const REQUEST_TIMEOUT_MS = 30000;
 
 interface TokenResponse {
   access_token: string;
@@ -69,6 +70,7 @@ class AmadeusClient {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
         });
 
         if (response.status === 401) {

@@ -1,8 +1,8 @@
-// FlyOn — SearchForm Component v1.3.0 | 2026-02-06
+// FlyOn — SearchForm Component v1.3.1 | 2026-02-06
 
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { format, addDays } from 'date-fns';
 import AirportInput from './AirportInput';
 import DatePicker from './DatePicker';
@@ -22,11 +22,22 @@ export default function SearchForm({ initialParams, compact = false }: SearchFor
   const [origin, setOrigin] = useState<Airport | null>(initialParams?.origin || null);
   const [destination, setDestination] = useState<Airport | null>(initialParams?.destination || null);
   const [departureDate, setDepartureDate] = useState(
-    initialParams?.departureDate || format(addDays(new Date(), 7), 'yyyy-MM-dd')
+    initialParams?.departureDate || ''
   );
   const [returnDate, setReturnDate] = useState(
-    initialParams?.returnDate || format(addDays(new Date(), 14), 'yyyy-MM-dd')
+    initialParams?.returnDate || ''
   );
+
+  // Set default dates on client only to avoid SSR hydration mismatch
+  useEffect(() => {
+    if (!initialParams?.departureDate && !departureDate) {
+      setDepartureDate(format(addDays(new Date(), 7), 'yyyy-MM-dd'));
+    }
+    if (!initialParams?.returnDate && !returnDate) {
+      setReturnDate(format(addDays(new Date(), 14), 'yyyy-MM-dd'));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [tripType, setTripType] = useState<'roundTrip' | 'oneWay'>(
     initialParams?.tripType || 'roundTrip'
   );

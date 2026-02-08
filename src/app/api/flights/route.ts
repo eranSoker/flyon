@@ -1,7 +1,8 @@
-// FlyOn — Flight Search API v1.9.0 | 2026-02-06
+// FlyOn — Flight Search API v1.9.4 | 2026-02-07
 
 import { NextRequest, NextResponse } from 'next/server';
 import { amadeus } from '@/lib/amadeus';
+import { getCached, CACHE_TTL } from '@/lib/cache';
 import type { AmadeusFlightResponse } from '@/lib/types';
 
 export async function GET(request: NextRequest) {
@@ -44,9 +45,11 @@ export async function GET(request: NextRequest) {
     const infants = params.get('infants');
     if (infants && infants !== '0') queryParams.infants = infants;
 
-    const response = await amadeus.get<AmadeusFlightResponse>(
-      '/v2/shopping/flight-offers',
-      queryParams
+    const cacheKey = `flights:${JSON.stringify(queryParams)}`;
+    const response = await getCached<AmadeusFlightResponse>(
+      cacheKey,
+      CACHE_TTL.FLIGHTS,
+      () => amadeus.get<AmadeusFlightResponse>('/v2/shopping/flight-offers', queryParams)
     );
 
     return NextResponse.json(response);

@@ -1,6 +1,6 @@
 {
   "name": "flyon",
-  "version": "1.9.2",
+  "version": "1.9.4",
   "description": "Flight Search Engine - A responsive flight search experience inspired by Google Flights",
   "private": true,
   "scripts": {

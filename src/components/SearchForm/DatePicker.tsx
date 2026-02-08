@@ -1,8 +1,8 @@
-// FlyOn — DatePicker Component v1.3.0 | 2026-02-06
+// FlyOn — DatePicker Component v1.3.1 | 2026-02-06
 
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { format, addYears } from 'date-fns';
 import styles from './DatePicker.module.css';
 
@@ -23,8 +23,15 @@ export default function DatePicker({
   onReturnDateChange,
   onTripTypeChange,
 }: DatePickerProps) {
-  const today = format(new Date(), 'yyyy-MM-dd');
-  const maxDate = format(addYears(new Date(), 1), 'yyyy-MM-dd');
+  // Compute date constraints on client only to avoid SSR hydration mismatch
+  const [today, setToday] = useState('');
+  const [maxDate, setMaxDate] = useState('');
+
+  useEffect(() => {
+    const now = new Date();
+    setToday(format(now, 'yyyy-MM-dd'));
+    setMaxDate(format(addYears(now, 1), 'yyyy-MM-dd'));
+  }, []);
 
   const handleTripTypeToggle = useCallback(() => {
     onTripTypeChange(tripType === 'roundTrip' ? 'oneWay' : 'roundTrip');
