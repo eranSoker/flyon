@@ -1,4 +1,4 @@
-// FlyOn — ResultsContent v1.9.3 | 2026-02-07
+// FlyOn — ResultsContent v1.9.5 | 2026-02-08
 
 'use client';
 
@@ -54,6 +54,10 @@ export default function ResultsContent() {
   const children = searchParams.get('children') || '0';
   const infants = searchParams.get('infants') || '0';
   const cabinClass = searchParams.get('cabinClass') || 'ECONOMY';
+  const originName = searchParams.get('originName');
+  const originCity = searchParams.get('originCity');
+  const destName = searchParams.get('destName');
+  const destCity = searchParams.get('destCity');
 
   useFlightSearch({
     origin: origin || undefined,
@@ -125,28 +129,30 @@ export default function ResultsContent() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
-  const summaryText = useMemo(() => {
-    const parts: string[] = [];
-    if (origin && destination) {
-      parts.push(`${origin} → ${destination}`);
+  const routeText = useMemo(() => {
+    const originLabel = originCity || originName || origin || '';
+    const destLabel = destCity || destName || destination || '';
+    if (originLabel && destLabel) {
+      return `${originLabel} (${origin}) ${returnDate ? '↔' : '→'} ${destLabel} (${destination})`;
     }
+    return origin && destination ? `${origin} ${returnDate ? '↔' : '→'} ${destination}` : '';
+  }, [origin, destination, originName, originCity, destName, destCity, returnDate]);
+
+  const detailsText = useMemo(() => {
+    const parts: string[] = [];
     if (departureDate) {
       const formatDate = (dateStr: string) => {
         const [, m, d] = dateStr.split('-');
         const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
         return `${months[parseInt(m, 10) - 1]} ${parseInt(d, 10)}`;
       };
-      if (returnDate) {
-        parts.push(`${formatDate(departureDate)} - ${formatDate(returnDate)}`);
-      } else {
-        parts.push(formatDate(departureDate));
-      }
+      parts.push(returnDate ? `${formatDate(departureDate)} – ${formatDate(returnDate)}` : formatDate(departureDate));
     }
     const totalPax = parseInt(adults, 10) + parseInt(children, 10) + parseInt(infants, 10);
-    parts.push(`${totalPax} traveler${totalPax !== 1 ? 's' : ''}`);
+    parts.push(`${totalPax} Traveler${totalPax !== 1 ? 's' : ''}`);
     parts.push(CABIN_CLASS_LABELS[cabinClass as CabinClass] || 'Economy');
-    return parts.join('  |  ');
-  }, [origin, destination, departureDate, returnDate, adults, children, infants, cabinClass]);
+    return parts.join(' · ');
+  }, [departureDate, returnDate, adults, children, infants, cabinClass]);
 
   const filterPanelElement = !state.loading && state.flights.length > 0 && (
     <FilterPanel
@@ -176,17 +182,15 @@ export default function ResultsContent() {
         <div className={styles.searchFormWrapper}>
           <SearchForm initialParams={initialParams} compact />
         </div>
-        <button
-          className={styles.summaryBar}
-          onClick={handleScrollToTop}
-          aria-label="Scroll to top to edit search"
-        >
-          <span className={styles.summaryText}>{summaryText}</span>
-          <svg className={styles.summaryEditIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16" aria-hidden="true">
-            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-          </svg>
-        </button>
+        <div className={styles.summaryBar}>
+          <div className={styles.summaryContent}>
+            <span className={styles.summaryRoute}>{routeText}</span>
+            <span className={styles.summaryDetails}>
+              {detailsText}
+              <button className={styles.summaryEdit} onClick={handleScrollToTop}>Edit</button>
+            </span>
+          </div>
+        </div>
       </div>
 
       <div className={styles.resultsLayout}>
