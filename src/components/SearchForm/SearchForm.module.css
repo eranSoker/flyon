@@ -97,7 +97,7 @@
 
   .airportGroup {
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
   }
 
   .swapBtn {
