@@ -1,4 +1,4 @@
-/* FlyOn — SearchForm Styles v1.3.0 | 2026-02-06 */
+/* FlyOn — SearchForm Styles v1.3.1 | 2026-02-08 */
 
 .form {
   width: 100%;
@@ -97,11 +97,11 @@
 
   .airportGroup {
     flex-direction: column;
+    align-items: center;
   }
 
   .swapBtn {
-    align-self: center;
-    transform: rotate(90deg);
+    display: none;
   }
 }
 

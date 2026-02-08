@@ -1,4 +1,4 @@
-// FlyOn — ResultsContent v1.9.6 | 2026-02-08
+// FlyOn — ResultsContent v1.9.7 | 2026-02-08
 
 'use client';
 
@@ -191,101 +191,105 @@ export default function ResultsContent() {
         </div>
       </div>
 
-      <div className={styles.resultsLayout}>
-        {/* Desktop sidebar */}
-        <div className={styles.sidebar}>
-          {filterPanelElement}
+      {state.loading ? (
+        <div className={styles.loadingScreen}>
+          <div className={styles.loadingIconTrack}>
+            <Image src="/flyon_icon.svg" alt="" width={48} height={48} className={styles.loadingIcon} />
+          </div>
+          <p className={styles.loadingText}>
+            Finding the best flights for you<span className={styles.loadingDots}></span>
+          </p>
         </div>
-
-        <div className={styles.mainContent}>
-          <div className={styles.toolbar}>
-            {/* Mobile filter button */}
-            <button
-              className={styles.mobileFilterBtn}
-              onClick={() => setFilterDrawerOpen(true)}
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18" aria-hidden="true">
-                <line x1="4" y1="6" x2="20" y2="6" />
-                <line x1="6" y1="12" x2="18" y2="12" />
-                <line x1="8" y1="18" x2="16" y2="18" />
-              </svg>
-              Filters{activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}
-            </button>
-
-            <div className={styles.sortContainer}>
-              <label className={styles.sortLabel}>Sort by:</label>
-              <select
-                className={styles.sortSelect}
-                value={state.filters.sortBy}
-                onChange={(e) => dispatch({ type: 'SET_SORT', payload: e.target.value as SortOption })}
-              >
-                {SORT_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+      ) : (
+        <div className={styles.resultsLayout}>
+          {/* Desktop sidebar */}
+          <div className={styles.sidebar}>
+            {filterPanelElement}
           </div>
 
-          {state.loading ? (
-            <div className={styles.loadingScreen}>
-              <Image src="/flyon_icon.svg" alt="" width={64} height={64} className={styles.loadingIcon} />
-              <p className={styles.loadingText}>
-                Finding the best flights for you<span className={styles.loadingDots}></span>
-              </p>
-            </div>
-          ) : state.error ? (
-            <div className={styles.errorState}>
-              <p className={styles.errorText}>{state.error}</p>
+          <div className={styles.mainContent}>
+            <div className={styles.toolbar}>
+              {/* Mobile filter button */}
               <button
-                className={styles.retryBtn}
-                onClick={() => window.location.reload()}
+                className={styles.mobileFilterBtn}
+                onClick={() => setFilterDrawerOpen(true)}
               >
-                Try again
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18" aria-hidden="true">
+                  <line x1="4" y1="6" x2="20" y2="6" />
+                  <line x1="6" y1="12" x2="18" y2="12" />
+                  <line x1="8" y1="18" x2="16" y2="18" />
+                </svg>
+                Filters{activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}
               </button>
+
+              <div className={styles.sortContainer}>
+                <label className={styles.sortLabel}>Sort by:</label>
+                <select
+                  className={styles.sortSelect}
+                  value={state.filters.sortBy}
+                  onChange={(e) => dispatch({ type: 'SET_SORT', payload: e.target.value as SortOption })}
+                >
+                  {SORT_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-          ) : (
-            <>
-              {filteredFlights.length > 0 && (
-                <PriceGraph
+
+            {state.error ? (
+              <div className={styles.errorState}>
+                <p className={styles.errorText}>{state.error}</p>
+                <button
+                  className={styles.retryBtn}
+                  onClick={() => window.location.reload()}
+                >
+                  Try again
+                </button>
+              </div>
+            ) : (
+              <>
+                {filteredFlights.length > 0 && (
+                  <PriceGraph
+                    flights={filteredFlights}
+                    carriers={state.carriers}
+                  />
+                )}
+                {origin && destination && (
+                  <div className={styles.calendarSection}>
+                    <button
+                      className={styles.calendarToggle}
+                      onClick={() => setShowCalendar((prev) => !prev)}
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16" aria-hidden="true">
+                        <rect x="3" y="4" width="18" height="18" rx="2" />
+                        <line x1="16" y1="2" x2="16" y2="6" />
+                        <line x1="8" y1="2" x2="8" y2="6" />
+                        <line x1="3" y1="10" x2="21" y2="10" />
+                      </svg>
+                      {showCalendar ? 'Hide' : 'Show'} price calendar
+                    </button>
+                    {showCalendar && (
+                      <PriceCalendar
+                        origin={origin}
+                        destination={destination}
+                        selectedDate={departureDate || ''}
+                        onDateSelect={handleCalendarDateSelect}
+                      />
+                    )}
+                  </div>
+                )}
+                <FlightList
                   flights={filteredFlights}
+                  totalCount={state.flights.length}
                   carriers={state.carriers}
                 />
-              )}
-              {origin && destination && (
-                <div className={styles.calendarSection}>
-                  <button
-                    className={styles.calendarToggle}
-                    onClick={() => setShowCalendar((prev) => !prev)}
-                  >
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16" aria-hidden="true">
-                      <rect x="3" y="4" width="18" height="18" rx="2" />
-                      <line x1="16" y1="2" x2="16" y2="6" />
-                      <line x1="8" y1="2" x2="8" y2="6" />
-                      <line x1="3" y1="10" x2="21" y2="10" />
-                    </svg>
-                    {showCalendar ? 'Hide' : 'Show'} price calendar
-                  </button>
-                  {showCalendar && (
-                    <PriceCalendar
-                      origin={origin}
-                      destination={destination}
-                      selectedDate={departureDate || ''}
-                      onDateSelect={handleCalendarDateSelect}
-                    />
-                  )}
-                </div>
-              )}
-              <FlightList
-                flights={filteredFlights}
-                totalCount={state.flights.length}
-                carriers={state.carriers}
-              />
-            </>
-          )}
+              </>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Mobile filter drawer */}
       <Modal
