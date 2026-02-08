@@ -197,7 +197,7 @@ export default function ResultsContent() {
             <Image src="/flyon_icon.svg" alt="" width={48} height={48} className={styles.loadingIcon} />
           </div>
           <p className={styles.loadingText}>
-            Finding the best flights for you<span className={styles.loadingDots}></span>
+            Finding the best flights for you.
           </p>
         </div>
       ) : (
